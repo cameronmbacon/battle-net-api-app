@@ -1,11 +1,13 @@
 const express = require('express');
-const PORT = process.env.PORT || 3000;
+require('./services/passport');
+
 const app = express();
+
+require('./routes/authRoutes')(app);
 
 app.get('/', (request, response) => {
     response.send({ hello: 'World!', deployed_on: 'Heroku' });
 });
 
-app.listen(PORT, () => {
-    console.log('Server up on PORT ' + PORT);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('Server up on PORT ' + PORT));
