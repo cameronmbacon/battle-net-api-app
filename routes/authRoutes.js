@@ -5,5 +5,14 @@ module.exports = (app) => {
         scope: ['wow.profile']
     }));
     
-    app.get('/auth/bnet/callback', passport.authenticate('bnet'))
-}
+    app.get('/auth/bnet/callback', passport.authenticate('bnet'));
+
+    app.get('/api/logout', (request, response) => {
+        request.logout();
+        response.send(request.user);
+    });
+
+    app.get('/api/current_user', (request, response) => {
+        response.send(request.user);
+    });
+};
