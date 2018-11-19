@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
     User.findById(id).then(user => {
-        done(null, user)
+        done(null, user);
     });
 });
 
@@ -20,7 +20,8 @@ passport.use(
         {
             clientID: keys.BNET_ID,
             clientSecret: keys.BNET_SECRET,
-            callbackURL: '/auth/bnet/callback'
+            callbackURL: '/auth/bnet/callback',
+            proxy: true
         },
         (accessToken, refreshToken, profile, done) => {
             User.findOne({ bnetId: profile.id }).then((existingUser) => {
