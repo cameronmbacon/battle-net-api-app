@@ -23,23 +23,21 @@ passport.use(
             callbackURL: '/auth/bnet/callback',
             proxy: true
         },
-        (accessToken, refreshToken, profile, done) => {
-            User.findOne({ bnetId: profile.id }).then((existingUser) => {
-                if (existingUser) {
-                    done(null, existingUser);
-                } else {
-                    new User(
-                        { 
-                            bnetId: profile.id,
-                            sub: profile.sub,
-                            battletag: profile.battletag,
-                            provider: profile.provider
-                        })
-                        .save()
-                        .then(user => done(null, user));
+        async (accessToken, refreshToken, profile, done) => {
+            const existingUser = await User.findOne({ bnetId: profile.id })
+            if (existingUser) {
+                return done(null, existingUser);
+            }
+            
+            const user = await new User(
+                { 
+                    bnetId: profile.id,
+                    sub: profile.sub,
+                    battletag: profile.battletag,
+                    provider: profile.provider
                 }
-            });
-
+            ).save()
+            done(null, user);
         }
     )
 );

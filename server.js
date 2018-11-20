@@ -21,11 +21,17 @@ app.use(passport.session());
 
 require('./routes/authRoutes')(app);
 
-app.get('/', (request, response) => {
-    response.send({ hello: 'World!', deployed_on: 'Heroku' });
-});
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('/client/build'));
+    
+    const path = require('path');   
+    app.get('*', (request, response) => {
+        response.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    });
+}
 
-const PORT = process.env.PORT || 3000;
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log('Express server up on PORT ' + PORT);
 });
