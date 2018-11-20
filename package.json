@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -17,10 +21,8 @@
     "url": "https://github.com/cameronmbacon/battle-net-api-app/issues"
   },
   "homepage": "https://github.com/cameronmbacon/battle-net-api-app#readme",
-  "devDependencies": {
-    "eslint": "^5.9.0"
-  },
   "dependencies": {
+    "concurrently": "^4.1.0",
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.4",
     "mongoose": "^5.3.12",

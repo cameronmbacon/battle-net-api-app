@@ -5,11 +5,17 @@ module.exports = (app) => {
         scope: ['wow.profile']
     }));
     
-    app.get('/auth/bnet/callback', passport.authenticate('bnet'));
+    app.get(
+        '/auth/bnet/callback',
+        passport.authenticate('bnet'),
+        (request, response) => {
+            response.redirect('/surveys');
+        }
+    );
 
     app.get('/api/logout', (request, response) => {
         request.logout();
-        response.send(request.user);
+        response.redirect('/');
     });
 
     app.get('/api/current_user', (request, response) => {
